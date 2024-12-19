@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useState } from 'react';
+import { toast } from "react-toastify";
 
 const AddCategory = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -21,7 +22,7 @@ const AddCategory = () => {
     axios.post('https://api.pnytrainings.com/api/categories', transformedData)
       .then(response => {
         console.log(response);
-        alert("Category added successfully!");
+        toast.success("Category added successfully!");
         navigate("/course-categories");
       })
       .catch(error => {
@@ -192,9 +193,8 @@ const AddCategory = () => {
             placeholder="Enter custom canonical URL"
           />
         </div>
-
         {/* Category Icons */}
-        <div className='mb-4'>
+        {/* <div className='mb-4'>
           <label className='block text-gray-400 mb-2'>Category Icons</label>
           <input
             type='text'
@@ -203,7 +203,7 @@ const AddCategory = () => {
             placeholder="Enter category icon"
           />
           {errors.Category_Icons && <span className="text-red-500">{errors.Category_Icons.message}</span>}
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <button

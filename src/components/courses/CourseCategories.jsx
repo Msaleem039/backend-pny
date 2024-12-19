@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const CourseCategories = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,15 +43,14 @@ const CourseCategories = () => {
     );
     setFilteredCategories(filtered);
   };
-
   const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?")) return;
     axios
       .delete(`https://api.pnytrainings.com/api/categories/${id}`, { withCredentials: true })
       .then(() => {
         const updatedCategories = categories.filter((category) => category._id !== id);
         setCategories(updatedCategories);
         setFilteredCategories(updatedCategories);
+        toast.warning("category item deleted successfully")
       })
       .catch((error) => {
         console.error("Error deleting category:", error.response?.data || error.message);

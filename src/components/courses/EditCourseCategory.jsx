@@ -18,7 +18,7 @@ const EditCourseCategory = () => {
       .then((response) => {
         setCategory(response.data);
         setLoading(false);
-        toast.success("product updated successfully")
+  
       })
       .catch((error) => {
         console.error("Error fetching category:", error);
@@ -47,6 +47,7 @@ const EditCourseCategory = () => {
       .put(`https://api.pnytrainings.com/api/categories/${id}`, category, { withCredentials: true })
       .then(() => {
         navigate("/course-categories"); // Redirect to the categories list after updating
+        toast.success("product updated successfully")
       })
       .catch((error) => {
         console.error("Error updating category:", error.response ? error.response.data : error.message);
