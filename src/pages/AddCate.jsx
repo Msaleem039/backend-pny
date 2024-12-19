@@ -10,26 +10,43 @@ const AddCategory = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [metaDescription, setMetaDescription] = useState(""); // State for meta description
+  const [categories, setCategories] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = (data) => {
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
+    const isDuplicate = categories.some(
+      (category) => category.Category_Name.toLowerCase() === data.Category_Name.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      toast.error("Category already exists!"); // Show error message
+      return; // Prevent form submission
+    }
     const transformedData = {
       ...data,
-      meta_Description: metaDescription, // Include meta description from state
+      meta_Description: metaDescription,
       in_Sitemap: data.in_Sitemap === "Yes",
       Index_Page_Option: data.Index_Page_Option === "Yes",
     };
-
+  
     axios.post('https://api.pnytrainings.com/api/categories', transformedData)
       .then(response => {
         console.log(response);
+        setCategories(response.data);
         toast.success("Category added successfully!");
         navigate("/course-categories");
       })
       .catch(error => {
         console.error(error);
         alert("Error adding category!");
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Re-enable the button
       });
   };
+  
 
   return (
     <div className='p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto'>
@@ -82,43 +99,8 @@ const AddCategory = () => {
             placeholder="Enter meta title"
           />
         </div>
-
-        {/* Meta Description */}
-        {/* <div className='mb-4'>
-          <label className='block text-gray-400 mb-2'>Meta Description</label>
-          <CKEditor
-            editor={ClassicEditor}
-            data={metaDescription}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setMetaDescription(data); // Update state with CKEditor data
-            }}
-            config={{
-              toolbar: [
-                'heading', '|', 'bold', 'italic', 'underline', 'link', '|',
-                'bulletedList', 'numberedList', '|', 'blockQuote', 'undo', 'redo'
-              ],
-              // Set text color styles in the editor
-              fontColor: {
-                colors: [
-                  {
-                    color: '#FFFFFF',
-                    label: 'White'
-                  },
-                  {
-                    color: '#1a202c',
-                    label: 'Dark Gray'
-                  },
-                  // Add more colors as needed
-                ],
-              }
-            }}
-            style={{ height: '200px', backgroundColor: '#1f2937' }} // Set background color
-          />
-          {errors.meta_Description && <span className="text-red-500">{errors.meta_Description.message}</span>}
-        </div> */}
         <div className="mb-4">
-  <label className="block text-gray-300 mb-2">Meta Description*</label>
+  <label className="block text-gray-300 mb-2 h-40">Meta Description*</label>
   <ReactQuill
     value={metaDescription}
     onChange={setMetaDescription} // Update state with ReactQuill data
@@ -131,57 +113,58 @@ const AddCategory = () => {
   )}
 </div>
 
-        {/* In Sitemap */}
-        <div className='mb-4'>
-          <label className='block text-gray-400 mb-2'>In Sitemap</label>
-          <div className='flex space-x-4'>
-            <label className='text-gray-400'>
-              <input
-                 type='checkbox'
-                value="Yes"
-                {...register("in_Sitemap", { required: "Please select an option" })}
-                className='mr-2'
-              />
-              Yes
-            </label>
-            <label className='text-gray-400'>
-              <input
-                type='checkbox'
-                value="No"
-                {...register("in_Sitemap", { required: "Please select an option" })}
-                className='mr-2'
-              />
-              No
-            </label>
-          </div>
-          {errors.in_Sitemap && <span className="text-red-500">{errors.in_Sitemap.message}</span>}
-        </div>
+{/* In Sitemap */}
+<div className='mb-4'>
+  <label className='block text-gray-400 mb-2'>In Sitemap</label>
+  <div className='flex space-x-4'>
+    <label className='text-gray-400'>
+      <input
+        type='radio'
+        value="Yes"
+        {...register("in_Sitemap", { required: "Please select an option" })}
+        className='mr-2'
+      />
+      Yes
+    </label>
+    <label className='text-gray-400'>
+      <input
+        type='radio'
+        value="No"
+        {...register("in_Sitemap", { required: "Please select an option" })}
+        className='mr-2'
+      />
+      No
+    </label>
+  </div>
+  {errors.in_Sitemap && <span className="text-red-500">{errors.in_Sitemap.message}</span>}
+</div>
 
-        {/* Page Index */}
-        <div className='mb-4'>
-          <label className='block text-gray-400 mb-2'>Page Index</label>
-          <div className='flex space-x-4'>
-            <label className='text-gray-400'>
-              <input
-               type='checkbox'
-                value="Yes"
-                {...register("Index_Page_Option", { required: "Please select an option" })}
-                className='mr-2'
-              />
-              Yes
-            </label>
-            <label className='text-gray-400'>
-              <input
-              type='checkbox'
-                value="No"
-                {...register("Index_Page_Option", { required: "Please select an option" })}
-                className='mr-2'
-              />
-              No
-            </label>
-          </div>
-          {errors.Index_Page_Option && <span className="text-red-500">{errors.Index_Page_Option.message}</span>}
-        </div>
+{/* Page Index */}
+<div className='mb-4'>
+  <label className='block text-gray-400 mb-2'>Page Index</label>
+  <div className='flex space-x-4'>
+    <label className='text-gray-400'>
+      <input
+        type='radio'
+        value="Yes"
+        {...register("Index_Page_Option", { required: "Please select an option" })}
+        className='mr-2'
+      />
+      Yes
+    </label>
+    <label className='text-gray-400'>
+      <input
+        type='radio'
+        value="No"
+        {...register("Index_Page_Option", { required: "Please select an option" })}
+        className='mr-2'
+      />
+      No
+    </label>
+  </div>
+  {errors.Index_Page_Option && <span className="text-red-500">{errors.Index_Page_Option.message}</span>}
+</div>
+
 
         {/* Custom Canonical URL */}
         <div className='mb-4'>
@@ -207,11 +190,15 @@ const AddCategory = () => {
 
         {/* Submit Button */}
         <button
-          type='submit'
-          className='w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 focus:outline-none transition duration-200 ease-in-out'
-        >
-          Add Category
-        </button>
+  type='submit'
+  className={`w-full px-4 py-2 rounded-lg focus:outline-none transition duration-200 ease-in-out ${
+    isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 text-white'
+  }`}
+  disabled={isSubmitting}
+>
+  {isSubmitting ? "Submitting..." : "Add Category"}
+</button>
+
       </form>
     </div>
   );
