@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const EditCourseCategory = () => {
   const [category, setCategory] = useState(null);
@@ -17,6 +18,7 @@ const EditCourseCategory = () => {
       .then((response) => {
         setCategory(response.data);
         setLoading(false);
+        toast.success("product updated successfully")
       })
       .catch((error) => {
         console.error("Error fetching category:", error);
