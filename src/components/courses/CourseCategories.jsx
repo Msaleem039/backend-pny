@@ -151,9 +151,9 @@ const CourseCategories = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-100">{category.Category_Name}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-100">{category.url_Slug}</div>
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">{category.short_Description.slice(0, 50)}...</div>
                       </td>
