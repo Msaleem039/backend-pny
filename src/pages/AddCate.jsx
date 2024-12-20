@@ -49,7 +49,7 @@ const AddCategory = () => {
   
 
   return (
-    <div className='p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto'>
+    <div className='p-6 bg-gray-800 rounded-lg shadow-md w-full mx-auto'>
       <h2 className='text-3xl font-semibold text-gray-100 mb-6 text-center'>
         Add Category
       </h2>

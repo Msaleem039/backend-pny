@@ -148,6 +148,7 @@ const AddCourse = () => {
               {...register("course_Image", { required: true })}
               className="w-full px-4 py-2 bg-gray-700 text-white rounded-md"
               accept="image/*"
+              placeholder="jpg,png,jpeg, gif size : 5mb"
               onChange={(e) => setSelectedCourseImage(e.target.files[0])}
             />
             {errors.courseImage && (

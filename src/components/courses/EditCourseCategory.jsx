@@ -62,7 +62,7 @@ const EditCourseCategory = () => {
     <div className="overflow-auto w-full">
       <Header />
 
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mx-auto mt-8 w-[50%] ">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mx-auto mt-8 w-full">
         <h2 className="text-2xl text-white font-semibold mb-6">Edit Course Category</h2>
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>

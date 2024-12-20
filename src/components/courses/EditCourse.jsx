@@ -33,7 +33,6 @@ const EditCourse = () => {
     course_Category: "",
     featured_Option: "",
   });
-
   const [categories, setCategories] = useState([]);
   const [brochureFile, setBrochureFile] = useState(null);
   const [instructors, setInstructors] = useState([]);
@@ -66,7 +65,6 @@ const EditCourse = () => {
         setLoading(false);
       }
     };
-
     if (courseId) fetchData();
   }, [courseId]);
 
