@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate, } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,7 +11,7 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
-const {id}= useParams();
+// const {id}= useParams();
 console.log(filteredBlogs)
   // Fetch blog posts from the API
   useEffect(() => {
@@ -46,8 +47,9 @@ const handleDelete = async (id) => {
     // After deleting, filter out the deleted blog from the local state
     setBlogs(blogs.filter(blog => blog._id !== id));
     setFilteredBlogs(filteredBlogs.filter(blog => blog._id !== id));
+    toast.success("blog delete successfully")
   } catch (error) {
-    console.error("Error deleting blog post:", error);
+    toast.error("Error deleting blog post:", error);
   }
 };
 
@@ -109,6 +111,9 @@ const handleDelete = async (id) => {
               <table className="min-w-full divide-y divide-gray-700 px-20">
                 <thead>
                   <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      #
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Title
                     </th>
@@ -116,7 +121,7 @@ const handleDelete = async (id) => {
                       Short Description
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Status
+                     Published Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Published Date
@@ -127,13 +132,16 @@ const handleDelete = async (id) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-700">
-                  {filteredBlogs.map((blog) => (
+                  {filteredBlogs.map((blog, index) => (
                     <motion.tr
                       key={blog.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     >
+                       <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-100">{index+1}</div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-100">{blog.postTitle}</div>
                       </td>
@@ -141,8 +149,8 @@ const handleDelete = async (id) => {
                         <div className="text-sm text-gray-300">{blog.shortDescription.slice(0,30)}...</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-300">{blog.status}</div>
-                      </td>
+      <div className="text-sm text-gray-300">{blog.isPublish ? "Published" : "Not Published"}</div>
+    </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">{new Date(blog.updatedAt).toLocaleDateString()}</div>
                       </td>

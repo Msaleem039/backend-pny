@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { useNavigate, Outlet, Link } from "react-router-dom"; // Removed useParams since it's not used
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BlogCategories = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,13 +43,14 @@ const BlogCategories = () => {
 
   // Delete a category
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
+
       try {
         await axios.delete(`https://api.pnytrainings.com/api/blogcate/${id}`);
         fetchCategories(); // Refresh categories after deletion
+        toast.success("blog categories deleted")
       } catch (error) {
-        console.error("Error deleting category:", error);
-      }
+        toast.error("Error deleting category:", error);
+      
     }
   };
 
@@ -93,7 +95,7 @@ const BlogCategories = () => {
                 Category Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Status
+              metaDescription
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Actions
@@ -115,15 +117,7 @@ const BlogCategories = () => {
                   <div className="text-sm font-medium text-gray-100">{category.categoryName}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      category.status === "Active"
-                        ? "bg-green-800 text-green-100"
-                        : "bg-red-800 text-red-100"
-                    }`}
-                  >
-                    {category.status}
-                  </span>
+                  <div className="text-sm font-medium text-gray-100">{category.metaDescription.slice(0,50)}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                   <button

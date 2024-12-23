@@ -92,7 +92,7 @@ const AddCourse = () => {
   return (
     <div className="w-full overflow-y-auto">
       <Header/>
-      <div className="p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto mt-10">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-md m-full mx-auto mt-10">
         <h2 className="text-3xl font-semibold text-gray-100 mb-6 text-center">
           Add Course
         </h2>

@@ -12,13 +12,17 @@ const Courses = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Fetch courses from the API
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("https://api.pnytrainings.com/api/courses");
+      const response = await axios.get("https://api.pnytrainings.com/api/courses", {
+        withCredentials: true,
+      });
       setCourses(response.data);
       setFilteredCourses(response.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
+      toast.error("Failed to load courses.");
     }
   };
 
@@ -26,22 +30,40 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
-  const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this course?")) return;
-
-    axios
-      .delete(`https://api.pnytrainings.com/api/courses/${id}`, { withCredentials: true })
-      .then(() => {
-        const updatedCourses = filteredCourses.filter((course) => course._id !== id);
-        setFilteredCourses(updatedCourses);
-        toast.success("Course deleted successfully!");
-      })
-      .catch((error) => {
-        console.error("Error deleting course:", error.response ? error.response.data : error.message);
-        alert("Failed to delete course");
-      });
+  // Delete a course
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://api.pnytrainings.com/api/courses/${id}`, { withCredentials: true });
+      const updatedCourses = filteredCourses.filter((course) => course._id !== id);
+      setFilteredCourses(updatedCourses);
+      toast.success("Course deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting course:", error.response ? error.response.data : error.message);
+      toast.error("Failed to delete course.");
+    }
   };
 
+  // Toggle the status of a course
+  const updateStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
+    try {
+      await axios.put(
+        `https://api.pnytrainings.com/api/courses/${id}`,
+        { status: newStatus },
+        { withCredentials: true }
+      );
+      const updatedCourses = filteredCourses.map((course) =>
+        course._id === id ? { ...course, status: newStatus } : course
+      );
+      setFilteredCourses(updatedCourses);
+      toast.success(`Status updated to ${newStatus}`);
+    } catch (error) {
+      console.error("Error updating status:", error.response ? error.response.data : error.message);
+      toast.error("Failed to update status.");
+    }
+  };
+
+  // Search functionality
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -53,6 +75,7 @@ const Courses = () => {
     setFilteredCourses(filtered);
   };
 
+  // Navigate to edit course page
   const handleEdit = (courseId) => {
     navigate(`/editcourse/${courseId}`);
   };
@@ -69,9 +92,7 @@ const Courses = () => {
       {!isAddCoursePage && (
         <>
           <div className="text-center items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-100 mb-5 cursor-pointer">
-              Courses
-            </h2>
+            <h2 className="text-2xl font-semibold text-gray-100 mb-5 cursor-pointer">Courses</h2>
             <hr className="w-full h-1 bg-slate-500 rounded-sm" />
             <div className="my-5 flex justify-center lg:justify-between items-center space-x-4">
               <div className="relative">
@@ -95,30 +116,14 @@ const Courses = () => {
             <table className="min-w-full divide-y divide-gray-700">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    #
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Course
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Description
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Image
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Monthly Tuition Fee
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Admission Fee
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">#</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Course</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Image</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Monthly Fee</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Admission Fee</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -134,18 +139,7 @@ const Courses = () => {
                         <div className="text-sm font-medium text-gray-100">{index + 1}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
-                              {course.course_Name.charAt(0)}
-                            </div>
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-100">
-                              {course.course_Name || "N/A"}
-                            </div>
-                          </div>
-                        </div>
+                        <div className="text-sm font-medium text-gray-100">{course.course_Name || "N/A"}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">
@@ -153,16 +147,11 @@ const Courses = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold text-blue-100">
-                          <img
-                            src={`https://api.pnytrainings.com/${course.course_Image.replace(
-                              /\\/g,
-                              "/"
-                            )}`}
-                            alt="Course"
-                            className="h-14 w-14"
-                          />
-                        </span>
+                        <img
+                          src={`https://api.pnytrainings.com/${course.course_Image.replace(/\\/g, "/")}`}
+                          alt="Course"
+                          className="h-14 w-14"
+                        />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">{course.Monthly_Fee || "N/A"}</div>
@@ -171,13 +160,16 @@ const Courses = () => {
                         <div className="text-sm text-gray-300">{course.Admission_Fee || "N/A"}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            course.Status ? "bg-green-800 text-green-100" : "bg-red-800 text-red-100"
+                        <button
+                          onClick={() => updateStatus(course._id, course.status)}
+                          className={`px-2 py-1 text-xs font-semibold rounded ${
+                            course.status === "Active"
+                              ? "bg-green-800 text-green-100"
+                              : "bg-red-800 text-red-100"
                           }`}
                         >
-                          {course.Status ? "Inactive" : "Active"}
-                        </span>
+                          {course.status}
+                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                         <button

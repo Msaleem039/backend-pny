@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../common/Header';
+import { toast } from 'react-toastify';
 
 const EditBlogcat = () => {
   const { id } = useParams(); // Get the category ID from the URL parameters
@@ -51,8 +52,9 @@ const EditBlogcat = () => {
     try {
       await axios.put(`https://api.pnytrainings.com/api/blogcate/${id}`, category);
       navigate('/blog-categories'); // Redirect to blog categories after successful edit
+      toast.success('Blog category updated successfully!'); // Show success toast message
     } catch (err) {
-      console.error('Error updating category:', err);
+      toast.error('Error updating category:', err);
       setError('Failed to update category.');
     }
   };
@@ -119,19 +121,7 @@ const EditBlogcat = () => {
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-400 mb-1" htmlFor="status">Status</label>
-          <select
-            id="status"
-            name="status"
-            value={category.status}
-            onChange={handleChange}
-            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg p-2 w-full"
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
+
         <button
           type="submit"
           className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300"

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; 
+import { toast } from "react-toastify";
 
 const AddBlog = () => {
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm();
@@ -27,22 +28,22 @@ const AddBlog = () => {
   // Handle file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Get the first selected file
-    setValue("postThumbImage", file); // Update form state
+    setValue("postThumbnailImage", file); // Update form state
   };
 
   const onSubmit = async (data) => {
     try {
       // Check if a file is selected
-      if (!data.postThumbImage) {
+      if (!data.postThumbnailImage) {
         console.error("No file selected for thumbnail image.");
         return;
       }
-
+     
       const formData = new FormData();
       formData.append("postTitle", data.postTitle);
       formData.append("urlSlug", data.urlSlug);
       formData.append("postCategory", data.postCategory);
-      formData.append("postThumbImage", data.postThumbImage); // Add the file here
+      formData.append("postThumbnailImage", data.postThumbnailImage); // Add the file here
       formData.append("shortDescription", data.shortDescription);
       formData.append("postDescription", data.postDescription);
       formData.append("isPublish", data.isPublish || false);
@@ -52,27 +53,28 @@ const AddBlog = () => {
       formData.append("inSitemap", data.inSitemap || false);
       formData.append("pageIndex", data.pageIndex || false);
       formData.append("customCanonicalUrl", data.customCanonicalUrl);
-
-      const res = await axios.post('https://api.pnytrainings.com/api/blogpost', formData, {
+  
+      await axios.post('https://api.pnytrainings.com/api/blogpost', formData, {
         headers: {
           'Content-Type': 'multipart/form-data' // Important for file upload
         }
       });
-
-      if (res.status === 200) {
-        navigate("/blogs"); // Redirect on success
-      } else {
-        console.error('Error adding blog:', res.data);
-      }
+  
+      // Redirect to the blog page after successful submission
+      navigate("/blog-post");
+      toast.success("Blog added successfully");
+      
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
+      toast.error("Failed to add blog. Please try again.");
     }
   };
+  
 
   return (
     <div className="w-full overflow-y-auto">
       <Header />
-      <div className='p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto mt-10'>
+      <div className='p-6 bg-gray-800 rounded-lg shadow-md w-full mx-auto mt-10'>
         <h2 className='text-3xl font-semibold text-gray-100 mb-6 text-center'>Add Blog</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Post Title */}

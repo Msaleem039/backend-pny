@@ -58,29 +58,8 @@ const CourseCategories = () => {
       });
   };
 
-  const handleToggleStatus = (id) => {
-    const category = categories.find((cat) => cat._id === id);
-    const updatedStatus = !category.status;
 
-    axios
-      .put(
-        `https://api.pnytrainings.com/api/categories/${id}`,
-        { status: updatedStatus },
-        { withCredentials: true }
-      )
-      .then(() => {
-        const updatedCategories = categories.map((cat) =>
-          cat._id === id ? { ...cat, status: updatedStatus } : cat
-        );
-        setCategories(updatedCategories);
-        setFilteredCategories(updatedCategories);
-      })
-      .catch((error) => {
-        console.error("Error updating category status:", error.response?.data || error.message);
-        setError("Failed to update category status");
-      });
-  };
-
+  
   const handleEdit = (id) => {
     navigate(`/editcoursecat/${id}`);
   };
@@ -126,28 +105,32 @@ const CourseCategories = () => {
               <table className="min-w-full divide-y divide-gray-700">
                 <thead>
                   <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+      Serial
+    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Description
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Status
-                    </th>
+                 
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-700">
-                  {filteredCategories.map((category) => (
+                  {filteredCategories.map((category, index) => (
                     <motion.tr
                       key={category._id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     >
+                        <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-100">{index + 1}</div>
+    </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-100">{category.Category_Name}</div>
                       </td>
@@ -157,16 +140,7 @@ const CourseCategories = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">{category.short_Description.slice(0, 50)}...</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          onClick={() => handleToggleStatus(category._id)}
-                          className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            category.status ? "bg-green-800 text-green-100" : "bg-red-800 text-red-100"
-                          }`}
-                        >
-                          {category.status ? "Active" : "Inactive"}
-                        </span>
-                      </td>
+               
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                         <button
                           className="text-indigo-400 hover:text-indigo-300 mr-2"
