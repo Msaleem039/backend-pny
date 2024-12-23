@@ -234,9 +234,6 @@ const AddCourse = () => {
     <span className="text-red-500">Course Description is required</span>
   )}
 </div>
-
-
-
           <div className="mb-4">
             <label className="block text-gray-400 mb-2">Instructor*</label>
             <select

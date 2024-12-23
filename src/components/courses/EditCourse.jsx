@@ -13,7 +13,7 @@ const EditCourse = () => {
     course_Name: "",
     Short_Description: "",
     course_Image: "",
-    status: "Active",
+    status: " ",
     Admission_Fee: "",
     Brochure: "",
     Course_Description: "",
@@ -38,7 +38,6 @@ const EditCourse = () => {
   const [instructors, setInstructors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,7 +107,7 @@ const EditCourse = () => {
   return (
     <div className="w-full overflow-auto">
       <Header />
-      <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border my-10 border-gray-700 mx-auto w-[50%]">
+      <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border my-10 border-gray-700 mx-auto w-full">
         <h2 className="text-2xl font-semibold text-gray-100 mb-5">Edit Course</h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           {/* Course Name */}
@@ -293,7 +292,7 @@ const EditCourse = () => {
           onChange={(e) => setCourse({ ...course, View_On_Web: e.target.checked })}
         />
       </div>
-      <div className="mb-2">
+      <div className="my-2">
         <label>Video ID</label>
         <input
           className="bg-gray-900 text-white"
@@ -303,7 +302,7 @@ const EditCourse = () => {
           onChange={handleChange}
         />
       </div>
-      <div className="mb-2">
+      <div className="my-2">
         <label>Page Index</label>
         <input
           type="checkbox"
@@ -313,7 +312,18 @@ const EditCourse = () => {
         />
       </div>
           {/* Other fields (like status, duration, etc.) can be added here */}
-
+          <div className="mb-4">
+          <label className="block text-gray-300">Status</label>
+          <select
+            name="status"
+            value={course.status}
+            onChange={(e) => setCourse((prev) => ({ ...prev, status: e.target.value }))}
+            className="w-full p-2 rounded bg-gray-700 text-white"
+          >
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
           <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg"
