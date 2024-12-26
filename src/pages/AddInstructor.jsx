@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddInstructor = () => {
   const [instructorName, setInstructorName] = useState("");
   const [instructorImage, setInstructorImage] = useState(null);
   const [profileDescription, setProfileDescription] = useState("");
   const [viewOnWeb, setViewOnWeb] = useState("No");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("name", instructorName);
     formData.append("photo", instructorImage);
@@ -27,13 +26,14 @@ const AddInstructor = () => {
       });
       console.log("Instructor Added:", response.data);
       navigate("/users");
+      toast.success("instructor added successfully")
     } catch (error) {
-      console.error("Error adding instructor:", error);
+      toast.error("Error adding instructor:", error);
     }
   };
 
   return (
-    <div className="p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto">
+    <div className="p-6 bg-gray-800 rounded-lg shadow-md w-full mx-auto">
       <h2 className="text-3xl font-semibold text-gray-100 mb-6 text-center">
         Add Instructor
       </h2>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SPCategories = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,7 +12,7 @@ const SPCategories = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams();
+  
 
   useEffect(() => {
     const fetchCityCategories = async () => {
@@ -33,8 +34,9 @@ const SPCategories = () => {
       setCityCategories(updatedCategories);
       setFilteredCategories(updatedCategories);
       console.log(response);
+      toast.success("category deleted successfully");
     } catch (error) {
-      console.error("Error deleting city category:", error);
+      toast.error("Error deleting city category:", error);
     }
   };
 
@@ -124,7 +126,7 @@ const SPCategories = () => {
                       <div className="text-sm text-gray-100">{category.cityCategoryName}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-300">{category.shortDescription}</div>
+                      <div className="text-sm text-gray-300">{category.shortDescription.slice(0,50)}...</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       <button

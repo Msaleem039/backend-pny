@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../common/Header';
+import { toast } from 'react-toastify';
 
 const Editspecialbp = () => {
   const { id } = useParams(); // Get post ID from route params
@@ -89,15 +90,16 @@ const Editspecialbp = () => {
         },
       });
       navigate('/sp-c-blog-post'); // Redirect back to the list after successful edit
+      toast.success("Special blog post updated successfully")
     } catch (error) {
-      console.error("Error updating post:", error);
+      toast.error("Error updating post:", error);
     }
   };
 
   return (
   <div className='overflow-auto w-full'>
     <Header/>
-    <div className="bg-gray-800 p-6 rounded-lg shadow-md w-[50%]  mx-auto my-6">
+    <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full  mx-auto my-6">
       <h2 className="text-2xl font-semibold text-gray-100 mb-4">Edit Special Blog Post</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="mb-4">

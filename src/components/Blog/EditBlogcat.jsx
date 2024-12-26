@@ -66,7 +66,7 @@ const EditBlogcat = () => {
   return (
     <div className='w-full h-full overflow-auto'>
         <Header/>
-      <div className=" w-[60%] mx-auto bg-gray-800 bg-opacity-50 rounded-lg p-6 shadow-md overflow-auto mt-10">
+      <div className=" w-full mx-auto bg-gray-800 bg-opacity-50 rounded-lg p-6 shadow-md overflow-auto mt-10">
 
       <h2 className="text-2xl font-semibold text-gray-100 mb-4">Edit Blog Category</h2>
       {error && <div className="text-red-500 mb-2">{error}</div>}

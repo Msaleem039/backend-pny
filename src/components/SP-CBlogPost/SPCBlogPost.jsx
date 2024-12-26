@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, Edit, Trash } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SPCBlogPost = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,9 +43,9 @@ console.log(blogPosts)
       await axios.delete(`https://api.pnytrainings.com/api/specialcatblog/${postId}`);
       setBlogPosts(blogPosts.filter((post) => post._id !== postId)); // Update the posts after deletion
       setFilteredPosts(filteredPosts.filter((post) => post._id !== postId)); // Update the filtered posts
-      console.log(`Deleted post with ID: ${postId}`);
+      toast.success(`Deleted post with ID: ${postId}`);
     } catch (error) {
-      console.error("Error deleting post:", error);
+      toast.error("Error deleting post:", error);
     }
   };
 

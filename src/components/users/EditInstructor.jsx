@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const EditInstructor = () => {
   const { userId } = useParams();
@@ -39,11 +40,11 @@ const EditInstructor = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Instructor updated successfully!");
+      toast.success("Instructor updated successfully!");
       navigate("/users");
     } catch (error) {
       console.error("Error updating instructor:", error.response ? error.response.data : error.message);
-      alert("Failed to update instructor. Reason: " + (error.response?.data?.message || error.message));
+      toast.error("Failed to update instructor. Reason: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -74,7 +75,7 @@ const EditInstructor = () => {
   return (
 <div className="overflow-auto mx-auto w-full">
   <Header/>
-  <div className="bg-gray-800 bg-opacity-50 my-6 backdrop-blur-md shadow-lg rounded-xl p-6 border mx-auto border-gray-700 w-[50%] ">
+  <div className="bg-gray-800 bg-opacity-50 my-6 backdrop-blur-md shadow-lg rounded-xl p-6 border mx-auto border-gray-700 w-full">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Edit Instructor</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -119,7 +120,6 @@ const EditInstructor = () => {
             required
           />
         </div>
-
         <div className="mb-4">
           <label className="block text-gray-300">Is View on Web?</label>
           <select
@@ -132,7 +132,6 @@ const EditInstructor = () => {
             <option value="No">No</option>
           </select>
         </div>
-
         <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg">
           Update Instructor
         </button>

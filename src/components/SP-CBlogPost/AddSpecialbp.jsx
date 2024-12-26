@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const AddSpecialbp = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const AddSpecialbp = () => {
       try {
         const response = await axios.get("https://api.pnytrainings.com/api/citycategory");
         setCityCategories(response.data);
+
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching city categories:", error);
@@ -67,10 +69,10 @@ const AddSpecialbp = () => {
       });
   
       if (res.status === 200 || res.status === 201) {
-        console.log("Blog post added successfully", res.data);
+        toast.success("Blog post added successfully", res.data);
         navigate("/sp-c-blog-post");  // Navigate after successful creation
       } else {
-        console.error("Error adding blog post", res.data);
+        toast.error("Error adding blog post", res.data);
       }
   
     } catch (error) {
@@ -82,7 +84,7 @@ const AddSpecialbp = () => {
   return (
     <div className="w-full overflow-y-auto">
       <Header />
-      <div className="p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto mt-10">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-md w-full mx-auto mt-10">
         <h2 className="text-3xl font-semibold text-gray-100 mb-6 text-center">
           Add City Wise Blog Post
         </h2>

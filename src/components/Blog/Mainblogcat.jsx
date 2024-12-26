@@ -2,7 +2,7 @@ import { UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "../common/Header";
 import StatCard from "../common/StatCard";
-import Blog from "./Blog";
+
 import BlogCategories from "./BlogCategories";
 
 const userStats = {
@@ -39,9 +39,7 @@ const Mainblogcat = () => {
 					/>
 					<StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' />
 				</motion.div>
-
 				<BlogCategories/>
-
 				{/* USER CHARTS */}
 				{/* <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8'>
 					<UserGrowthChart />

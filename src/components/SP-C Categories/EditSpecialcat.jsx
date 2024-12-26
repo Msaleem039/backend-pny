@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const EditSpecialcat = () => {
   const { id } = useParams(); // Get the category ID from the URL params
@@ -53,16 +54,18 @@ const EditSpecialcat = () => {
     e.preventDefault();
     try {
       await axios.put(`https://api.pnytrainings.com/api/citycategory/${id}`, categoryData);
-      navigate("/sp-c-categories"); // Redirect to categories page after successful edit
+      navigate("/sp-c-categories"); // Redirect to categories page after successful 
+      toast.success('Special blog category updated successfully!'); // Show success toast message
     } catch (error) {
       console.error("Error updating category:", error);
+      toast.error('Error updating category:', error); // Show error toast message
     }
   };
 
   return (
     <div className="overflow-auto w-full">
       <Header />
-      <div className="bg-gray-800 bg-opacity-50 w-[50%] my-6 mx-auto backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700">
+      <div className="bg-gray-800 bg-opacity-50 w-full my-6 mx-auto backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700">
         <h2 className="text-2xl text-center font-semibold text-gray-100 mb-6">
           Edit Special Blog Category
         </h2>
