@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
+import { toast } from "react-toastify";
 
 const AddFlyers = () => {
   const [flyerFile, setProfilePic] = useState(null);
@@ -72,11 +73,13 @@ const AddFlyers = () => {
         body: formData,
       });
        console.log(response)
+
       if (!response.ok) {
         const errorText = await response.text(); // Get the error response body
         console.log('Error: ' + errorText)
+
       }
-  
+      toast.success("E-flayer added successfully")
       navigate("/eflayer");
     } catch (error) {
       console.error("Error adding Eflyer:", error);
@@ -88,7 +91,7 @@ const AddFlyers = () => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header />
-      <div className="p-6 bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto my-10">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-md w-full mx-auto my-10">
         <h2 className="text-3xl font-semibold text-gray-100 mb-6 text-center">
           Add Eflayer
         </h2>
@@ -137,18 +140,25 @@ const AddFlyers = () => {
             </select>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-400 mb-2" htmlFor="profilePic">
-              Profile Picture
-            </label>
-            <input
-    type="file"
-    onChange={(e) => setProfilePic(e.target.files[0])} // Set the first selected file
-    className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-    accept="image/*"
-    required // Optional, make it required if necessary
+          <input
+  type="file"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Only JPG and PNG images are allowed");
+        e.target.value = null; // Reset the file input
+        return;
+      }
+      setProfilePic(file); // Set the file if it's valid
+    }
+  }}
+  className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+  accept="image/jpeg, image/png"
+  required
 />
-          </div>
+
           <div className="mb-4">
             <label className="block text-gray-400 mb-2" htmlFor="status">
               Status

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const TableGallery = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,19 +28,20 @@ const TableGallery = () => {
     try {
       await axios.delete(`https://api.pnytrainings.com/api/gallery/${itemId}`);
       setGalleryItems(galleryItems.filter((item) => item._id !== itemId));
+      toast.success("Gallery item deleted successfully");
     } catch (error) {
       console.error("Error deleting gallery item:", error);
     }
   };
 
-  const handleAddGalleryItem = async (newItem) => {
-    try {
-      const response = await axios.post("https://api.pnytrainings.com/api/gallery", newItem);
-      setGalleryItems([...galleryItems, response.data]);
-    } catch (error) {
-      console.error("Error adding new gallery item:", error);
-    }
-  };
+  // const handleAddGalleryItem = async (newItem) => {
+  //   try {
+  //     const response = await axios.post("https://api.pnytrainings.com/api/gallery", newItem);
+  //     setGalleryItems([...galleryItems, response.data]);
+  //   } catch (error) {
+  //     console.error("Error adding new gallery item:", error);
+  //   }
+  // };
 
   const isAddGalleryPage = location.pathname.includes("addgallery");
 
@@ -62,7 +64,7 @@ const TableGallery = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search gallery items..."
+                  placeholder="Search gallery title"
                   className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={searchTerm}
                   onChange={handleSearch}

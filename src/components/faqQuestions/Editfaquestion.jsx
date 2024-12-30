@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const Editfaquestion = () => {
   const { id } = useParams(); // Get the ID from URL params
@@ -49,15 +50,18 @@ const Editfaquestion = () => {
         customCanonicalUrl,
       });
       navigate("/faquestion"); // Redirect after successful update
+      toast.success("FAQ question Successfully updated")
     } catch (error) {
       console.error("Error updating FAQ question:", error);
     }
   };
-
+  const handleCancel = () => {
+    navigate("/faquestion");
+  };
   return (
   <div className="w-full overflow-auto">
     <Header/>
-    <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl w-[50%] mx-auto">
+    <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl w-full mx-auto">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Edit FAQ Question</h2>
 
       {/* Question input */}
@@ -111,7 +115,7 @@ const Editfaquestion = () => {
       </div>
 
       {/* Custom Canonical URL input */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label className="block text-gray-300 mb-2">Custom Canonical URL</label>
         <input
           type="text"
@@ -119,15 +123,24 @@ const Editfaquestion = () => {
           value={customCanonicalUrl}
           onChange={(e) => setCustomCanonicalUrl(e.target.value)}
         />
-      </div>
+      </div> */}
 
       {/* Save Changes button */}
-      <button
+ <div className="flex justify-between">
+ <button
         onClick={handleUpdate}
         className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
       >
         Save Changes
       </button>
+      <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none"
+            >
+              Cancel
+            </button>
+ </div>
     </div>
   </div>
   );

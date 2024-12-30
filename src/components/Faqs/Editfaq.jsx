@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const EditFaq = () => {
   const { id } = useParams();
@@ -61,6 +62,7 @@ const EditFaq = () => {
         },
       });
       navigate("/faqs"); // Redirect after successful update
+      toast.success("FAQ category updated successfully")
     } catch (error) {
       console.error("Error updating FAQ category:", error);
     }
@@ -69,7 +71,7 @@ const EditFaq = () => {
   return (
     <div className="overflow-auto w-full">
       <Header />
-      <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl w-[50%] mx-auto my-6">
+      <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl w-full mx-auto my-6">
         <h2 className="text-2xl font-semibold text-gray-100 mb-5">Edit FAQ Category</h2>
 
         <div className="mb-4">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const AddFaq = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -38,6 +39,7 @@ const AddFaq = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/faqs"); // Redirect after successful submission
+      toast.success("faq submitted successfully")
     } catch (error) {
       console.error("Error adding FAQ category:", error);
     }
@@ -46,7 +48,7 @@ const AddFaq = () => {
   return (
 <div className="overflow-auto w-full">
   <Header/>
-<div className="bg-gray-800 bg-opacity-50  mx-auto backdrop-blur-md shadow-lg my-6 rounded-xl p-6 border w-[50%] border-gray-700 overflow-auto">
+<div className="bg-gray-800 bg-opacity-50  mx-auto backdrop-blur-md shadow-lg my-6 rounded-xl p-6 border w-full border-gray-700 overflow-auto">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Add FAQ Category</h2>
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">

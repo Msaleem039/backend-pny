@@ -36,7 +36,7 @@ const AddGallery = () => {
   return (
  <div className="overflow-auto w-full">
   <Header/>
-  <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700 mx-auto w-[50%] my-6">
+  <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700 mx-auto w-full my-6">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Add Gallery</h2>
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Eflayer = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,6 +18,7 @@ const Eflayer = () => {
         const response = await axios.get("https://api.pnytrainings.com/api/eflyer");
         setEflyers(response.data); // Set fetched data
         setFilteredEflyers(response.data); // Initialize filtered data
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -41,19 +43,37 @@ const Eflayer = () => {
   };
 
   // Delete the selected eflyer
-  const handleDelete = async (id) => { // Track the ID being deleted
+  const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://api.pnytrainings.com/api/eflyer/${id}`);
-      // Remove the deleted eFlyer from both states
-      const updatedEflyers = eflyers.filter((eflyer) => eflyer._id !== id);
-      setEflyers(updatedEflyers);
-      setFilteredEflyers(updatedEflyers);
-      console.log("delete item deleted");
+      // Log the ID to confirm it's correct
+      console.log("Deleting eFlyer with ID:", id);
+  
+      // Send the DELETE request
+      const response = await axios.delete(`https://api.pnytrainings.com/api/eflyer/${id}`);
+  
+      // Log the response for debugging
+      console.log("Delete response:", response);
+  
+      if (response.status === 200 || response.status === 204) {
+        // Update state to remove the deleted eFlyer
+        const updatedEflyers = eflyers.filter((eflyer) => eflyer._id !== id);
+        setEflyers(updatedEflyers);
+        setFilteredEflyers(updatedEflyers);
+        toast.success("E-flyer deleted successfully");
+      } else {
+        // Log unexpected status codes
+        console.error("Unexpected response status:", response.status);
+        toast.error("Failed to delete the e-flyer. Please try again.");
+      }
     } catch (error) {
-      console.error("Error deleting eFlyer:", error);
-      alert("Failed to delete eFlyer. Please try again.");
-    } 
+      // Log the error response for debugging
+      console.error("Error deleting eFlyer:", error.response?.data || error.message);
+      toast.error("Failed to delete the e-flyer. Please try again.");
+    }
   };
+  
+  
+  
 
   const isAddInstructorPage = location.pathname.includes("adduser");
 
@@ -126,17 +146,19 @@ const Eflayer = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {eflyer.course?.course_Name || "N/A"}
                     </td>
+                  
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          eflyer.status === "Active"
-                            ? "bg-green-800 text-green-100"
-                            : "bg-red-800 text-red-100"
-                        }`}
-                      >
-                        {eflyer.status}
-                      </span>
-                    </td>
+  <span
+    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+      eflyer.status
+        ? "bg-green-800 text-green-100" // For `true`
+        : "bg-red-800 text-red-100"    // For `false`
+    }`}
+  >
+    {eflyer.status ? "Active" : "Inactive"}
+  </span>
+</td>
+
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       <button
                         className="text-indigo-400 hover:text-indigo-300 mr-2"

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const Tablefaqquestion = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [faqQuestions, setFaqQuestions] = useState([]);
@@ -16,6 +16,7 @@ const Tablefaqquestion = () => {
       .get("https://api.pnytrainings.com/api/faquestion")
       .then((response) => setFaqQuestions(response.data))
       .catch((error) => console.error("Error fetching FAQ questions:", error));
+      console.log(faqQuestions)
   }, []);
 
   const handleSearch = (e) => {
@@ -26,13 +27,12 @@ const Tablefaqquestion = () => {
     try {
       await axios.delete(`https://api.pnytrainings.com/api/faquestion/${id}`);
       setFaqQuestions(faqQuestions.filter((question) => question._id !== id));
+      toast.success("faq questions deleted successfully")
     } catch (error) {
       console.error("Error deleting FAQ question:", error);
     }
   };
-
   const isAddFaqPage = location.pathname.includes("addfaq");
-
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"

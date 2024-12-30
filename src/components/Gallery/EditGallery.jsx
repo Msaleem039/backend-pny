@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const EditGallery = () => {
   const { id } = useParams();
@@ -26,6 +27,9 @@ const EditGallery = () => {
       .catch((error) => console.error("Error fetching gallery data:", error));
   }, [id]);
 
+  const handleCancel = () => {
+    navigate("/gallery");
+  };
   const handleUpdate = async () => {
     try {
       await axios.put(`https://api.pnytrainings.com/api/gallery/${id}`, {
@@ -35,6 +39,7 @@ const EditGallery = () => {
         note
       });
       navigate("/gallery"); // Redirect after update
+      toast.success("update gallery successfully")
     } catch (error) {
       console.error("Error updating gallery:", error);
     }
@@ -43,7 +48,7 @@ const EditGallery = () => {
   return (
  <div className="overflow-auto w-full">
   <Header/>
-     <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg my-6 rounded-xl mx-auto w-[50%]">
+     <div className="p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg my-6 rounded-xl mx-auto w-full">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Edit Gallery</h2>
       {/* Gallery Title Field */}
       <div className="mb-4">
@@ -89,12 +94,25 @@ const EditGallery = () => {
         />
       </div>
 
-      <button
+  <div className="flex justify-between">
+  <button
         onClick={handleUpdate}
         className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
       >
         Save Changes
       </button>
+      
+
+
+      <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none"
+            >
+              Cancel
+            </button>
+
+  </div>
     </div>
  </div>
   );

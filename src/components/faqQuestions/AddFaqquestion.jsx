@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import Header from "../common/Header";
+import { toast } from "react-toastify";
 
 const AddFaqquestion = () => {
   const [question, setQuestion] = useState("");
@@ -33,6 +34,7 @@ const AddFaqquestion = () => {
     try {
       await axios.post("https://api.pnytrainings.com/api/faquestion", formData);
       navigate("/faquestion"); // Redirect after successful submission
+      toast.success("faq successfully")
     } catch (error) {
       console.error("Error adding FAQ question:", error);
     }
@@ -41,7 +43,7 @@ const AddFaqquestion = () => {
   return (
  <div className="overflow-auto w-full">
   <Header/>
-  <div className="bg-gray-800 bg-opacity-50  mx-auto backdrop-blur-md my-6 shadow-lg rounded-xl p-6 border border-gray-700 overflow-auto w-[50%]">
+  <div className="bg-gray-800 bg-opacity-50  mx-auto backdrop-blur-md my-6 shadow-lg rounded-xl p-6 border border-gray-700 overflow-auto w-full">
       <h2 className="text-2xl font-semibold text-gray-100 mb-5">Add FAQ Question</h2>
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
