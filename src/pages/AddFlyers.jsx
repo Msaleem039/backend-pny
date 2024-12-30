@@ -82,12 +82,9 @@ const AddFlyers = () => {
       console.error("Error adding Eflyer:", error);
     }
   };
-  
-
   const handleCancel = () => {
     navigate("/eflayer");
   };
-
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header />
@@ -176,7 +173,7 @@ const AddFlyers = () => {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 focus:outline-none"
             >
-              Add Eflayer
+              Add E_flayer
             </button>
             <button
               type="button"

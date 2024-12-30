@@ -95,6 +95,11 @@ const EditCourse = () => {
     }
   };
 
+  
+  const handleCancel = () => {
+    navigate("/courses");
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setCourse((prevCourse) => ({
@@ -324,12 +329,21 @@ const EditCourse = () => {
             <option value="Inactive">Inactive</option>
           </select>
         </div>
-          <button
+      <div className="flex justify-between">
+      <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg"
           >
             Update Course
           </button>
+          <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none"
+            >
+              Cancel
+            </button>
+      </div>
         </form>
       </div>
     </div>

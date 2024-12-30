@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -89,6 +89,10 @@ const EditBlog = () => {
     } catch (error) {
       toast.error('Error updating blog:', error);
     }
+  };
+
+  const handleCancel = () => {
+    navigate("/blog-post");
   };
 
   return (
@@ -204,10 +208,20 @@ const EditBlog = () => {
             onChange={handleFileChange}
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-between">
           <button type="submit" className="px-4 py-2 bg-blue-600 rounded-md">
             Update Blog
           </button>
+
+          
+       <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none"
+            >
+              Cancel
+            </button>
+
         </div>
       </form>
     </div>

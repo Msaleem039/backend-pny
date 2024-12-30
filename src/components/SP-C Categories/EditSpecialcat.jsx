@@ -14,6 +14,8 @@ const EditSpecialcat = () => {
     metaDescription: "",
     metaTitle: "",
     urlSlug: "",
+    pageIndex:" ",
+
   });
 
   console.log(categoryData);
@@ -90,7 +92,7 @@ const EditSpecialcat = () => {
               name="shortDescription"
               value={categoryData.shortDescription}
               onChange={handleChange}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded-lg"
+              className="w-full px-2 py-2 bg-gray-700 text-white rounded-lg"
               rows={4}
             />
           </div>
@@ -141,6 +143,20 @@ const EditSpecialcat = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 bg-gray-700 text-white rounded-lg"
               rows={4}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 text-sm font-medium mb-2">
+              In Sitemap
+            </label>
+            <input
+              type="checkbox"
+              name="pageIndex
+"
+              checked={categoryData.pageIndex
+                }
+              onChange={handleChange}
+              className="rounded-md"
             />
           </div>
           <button

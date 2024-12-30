@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, Edit, Trash } from "lucide-react";
+import { Search } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -146,13 +146,15 @@ console.log(blogPosts)
           className="text-indigo-400 hover:text-indigo-300 mr-2"
           onClick={() => handleEdit(post._id)}
         >
-          <Edit size={18} />
+          {/* <Edit size={18} /> */}
+          Edit
         </button>
         <button
           className="text-red-400 hover:text-red-300"
           onClick={() => handleDelete(post._id)}
         >
-          <Trash size={18} />
+          {/* <Trash size={18} /> */}
+          Delete
         </button>
       </td>
     </motion.tr>

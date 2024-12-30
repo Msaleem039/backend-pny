@@ -4,7 +4,6 @@ import { Search } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [courses, setCourses] = useState([]);
@@ -28,7 +27,7 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [location.pathname]);
 
   // Delete a course
   const handleDelete = async (id) => {
@@ -139,11 +138,11 @@ const Courses = () => {
                         <div className="text-sm font-medium text-gray-100">{index + 1}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-100">{course.course_Name || "N/A"}</div>
+                        <div className="text-sm font-medium text-gray-100">{course.course_Name.slice(0,20) || "N/A"}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">
-                          {course.Short_Description.slice(0, 50) || "N/A"}
+                          {course.Short_Description.slice(0, 20) || "N/A"}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

@@ -14,6 +14,7 @@ const CourseCategories = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Fetch categories whenever the location changes
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -28,11 +29,11 @@ const CourseCategories = () => {
         setLoading(false);
       }
     };
-  
+
     fetchCategories();
   }, [location.pathname]); // Refetch when the route changes
-  
 
+  // Handle search filtering
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -43,6 +44,8 @@ const CourseCategories = () => {
     );
     setFilteredCategories(filtered);
   };
+
+  // Handle category deletion
   const handleDelete = (id) => {
     axios
       .delete(`https://api.pnytrainings.com/api/categories/${id}`, { withCredentials: true })
@@ -50,7 +53,7 @@ const CourseCategories = () => {
         const updatedCategories = categories.filter((category) => category._id !== id);
         setCategories(updatedCategories);
         setFilteredCategories(updatedCategories);
-        toast.warning("category item deleted successfully")
+        toast.warning("Category item deleted successfully");
       })
       .catch((error) => {
         console.error("Error deleting category:", error.response?.data || error.message);
@@ -58,12 +61,12 @@ const CourseCategories = () => {
       });
   };
 
-
-  
+  // Handle category edit navigation
   const handleEdit = (id) => {
     navigate(`/editcoursecat/${id}`);
   };
 
+  // Check if current page is Add Category page
   const isAddCategoryPage = location.pathname.includes("addcategory");
 
   return (
@@ -105,16 +108,15 @@ const CourseCategories = () => {
               <table className="min-w-full divide-y divide-gray-700">
                 <thead>
                   <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-      Serial
-    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      Serial
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Description
                     </th>
-                 
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Actions
                     </th>
@@ -128,19 +130,15 @@ const CourseCategories = () => {
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                        <td className="px-6 py-4 whitespace-nowrap">
-      <div className="text-sm font-medium text-gray-100">{index + 1}</div>
-    </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-100">{index + 1}</div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-100">{category.Category_Name}</div>
                       </td>
-                      {/* <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-100">{category.url_Slug}</div>
-                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-300">{category.short_Description.slice(0, 50)}...</div>
                       </td>
-               
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                         <button
                           className="text-indigo-400 hover:text-indigo-300 mr-2"
