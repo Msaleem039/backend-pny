@@ -10,7 +10,7 @@ const Courses = () => {
   const [filteredCourses, setFilteredCourses] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
-
+   console.log(courses)
   // Fetch courses from the API
   const fetchCourses = async () => {
     try {

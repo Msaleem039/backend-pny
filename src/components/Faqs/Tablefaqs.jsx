@@ -31,7 +31,6 @@ const Tablefaqs = () => {
       console.error("Error deleting FAQ category:", error);
     }
   };
-
   const isAddFaqPage = location.pathname.includes("addfaq");
 
   return (
